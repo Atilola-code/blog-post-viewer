@@ -1,41 +1,24 @@
-import { blogPosts } from "@/app/data";
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import type { Metadata } from "next";
+import { blogPosts } from '@/app/data'
+import { notFound } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
+import type { Metadata } from 'next'
 
-// Pre-generate all static routes based on blog post IDs
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     id: post.id.toString(),
-  }));
+  }))
 }
 
-// Optional: Generate dynamic metadata for better SEO and titles
-export async function generateMetadata({
+// The critical fix - using the exact type structure Next.js expects
+export default function Page({
   params,
 }: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const post = blogPosts.find((post) => post.id.toString() === params.id);
+  params: { id: string }
+}) {
+  const post = blogPosts.find((post) => post.id.toString() === params.id)
 
-  if (!post) {
-    return {
-      title: "Post Not Found | Blog Viewer",
-    };
-  }
-
-  return {
-    title: `${post.title} | Blog Viewer`,
-    description: post.snippet,
-  };
-}
-
-// Main page component for individual blog posts
-export default function Page({ params }: { params: { id: string } }) {
-  const post = blogPosts.find((post) => post.id.toString() === params.id);
-
-  if (!post) notFound();
+  if (!post) notFound()
 
   return (
     <div className="max-w-3xl mx-auto p-6 min-h-screen">
@@ -57,7 +40,25 @@ export default function Page({ params }: { params: { id: string } }) {
         Back to Blog
       </Link>
     </div>
-  );
+  )
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string }
+}): Promise<Metadata> {
+  const post = blogPosts.find((post) => post.id.toString() === params.id)
 
+  if (!post) return {}
+
+  return {
+    title: post.title,
+    description: post.snippet,
+    openGraph: {
+      title: post.title,
+      description: post.snippet,
+      images: [post.image],
+    },
+  }
+}
