@@ -1,13 +1,7 @@
-import { blogPosts } from '@/app/data';
-import Image from 'next/image';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-
-type PageParams = {
-  params: {
-    id: string;
-  };
-};
+import { blogPosts } from "@/app/data";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
@@ -15,7 +9,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Page({ params }: PageParams) {
+export default async function Page({
+  params,
+}: {
+  params: { id: string };
+}) {
   const post = blogPosts.find((post) => post.id.toString() === params.id);
 
   if (!post) {
@@ -43,3 +41,4 @@ export default async function Page({ params }: PageParams) {
     </div>
   );
 }
+
