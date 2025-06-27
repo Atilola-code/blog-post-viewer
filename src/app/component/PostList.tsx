@@ -4,6 +4,7 @@ import { useState } from "react";
 import BlogCard from "./BlogCard";
 import Sidebar from "./SideBar";
 import { BlogPost, blogPosts } from "../data";
+import NewsletterSignup from "./NewsletterSignUp";
 
 const PostList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,6 +38,7 @@ const PostList: React.FC = () => {
             No posts found.
           </p>
         )}
+        <NewsletterSignup/>
       </div>
     </div>
   );
