@@ -3,10 +3,17 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 
-type PageParams = {
-  params: {
-    id: string
-  }
+// Use Next.js's built-in types
+import type { Metadata, ResolvingMetadata } from 'next'
+
+// Define your post type (if not already defined elsewhere)
+type BlogPost = {
+  id: number | string
+  title: string
+  content: string
+  category: string
+  image: string
+  snippet: string
 }
 
 export async function generateStaticParams() {
@@ -15,7 +22,13 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function Page({ params }: PageParams) {
+// Use the correct props type for Next.js App Router
+type Props = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default function Page({ params }: Props) {
   const post = blogPosts.find((post) => post.id.toString() === params.id)
 
   if (!post) notFound()
@@ -28,6 +41,7 @@ export default function Page({ params }: PageParams) {
         width={800}
         height={500}
         className="rounded-lg w-full h-[500px] object-cover mb-6"
+        priority
       />
       <h1 className="text-4xl font-bold mb-4 text-black">{post.title}</h1>
       <p className="text-sm text-orange-600 mb-4 uppercase">{post.category}</p>
@@ -42,7 +56,10 @@ export default function Page({ params }: PageParams) {
   )
 }
 
-export async function generateMetadata({ params }: PageParams) {
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const post = blogPosts.find((post) => post.id.toString() === params.id)
 
   if (!post) return {}
