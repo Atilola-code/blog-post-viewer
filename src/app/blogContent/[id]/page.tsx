@@ -3,12 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+type Props = {
+  params: {
+    id: string;
+  };
+};
 
-export default async function Page({ params }: {params: {id: string}})  {
+export async function generateStaticParams() {
+  return blogPosts.map((post) => ({
+    id: post.id.toString(),
+  }));
+}
+
+export default async function Page({ params }: Props) {
   const post = blogPosts.find((post) => post.id.toString() === params.id);
 
   if (!post) {
-    return notFound();
+    notFound();
   }
 
   return (
@@ -32,11 +43,4 @@ export default async function Page({ params }: {params: {id: string}})  {
       </Link>
     </div>
   );
-}
-
-
-export function generateStaticParams(): { id: string }[] {
-  return blogPosts.map((post) => ({
-    id: post.id.toString(),
-  }))
 }
