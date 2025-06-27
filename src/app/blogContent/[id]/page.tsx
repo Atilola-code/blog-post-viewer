@@ -15,7 +15,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: Props) {
+export default async function Page({ params }: Props) {
   const post = blogPosts.find((post) => post.id.toString() === params.id);
 
   if (!post) {
