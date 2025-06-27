@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type PageProps = {
+type Props = {
   params: {
     id: string;
   };
@@ -15,7 +15,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: PageProps) {
+export default function Page({ params }: Props) {
   const post = blogPosts.find((post) => post.id.toString() === params.id);
 
   if (!post) notFound();
