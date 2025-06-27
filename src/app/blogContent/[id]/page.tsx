@@ -1,5 +1,6 @@
 import { blogPosts } from "@/app/data";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface BlogPageProps {
@@ -12,7 +13,7 @@ export default function BlogPage({ params }: BlogPageProps) {
   const post = blogPosts.find((post) => post.id.toString() === params.id);
 
   if (!post) {
-    notFound();
+    return notFound();
   }
 
   return (
@@ -28,12 +29,12 @@ export default function BlogPage({ params }: BlogPageProps) {
       <p className="text-sm text-orange-600 mb-4 uppercase">{post.category}</p>
       <p className="text-black text-lg leading-relaxed">{post.content}</p>
 
-      <a
+      <Link
         href="/"
         className="mt-8 inline-block bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition"
       >
         Back to Blog
-      </a>
+      </Link>
     </div>
   );
 }
