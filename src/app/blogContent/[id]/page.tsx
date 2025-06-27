@@ -3,13 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-}
 
-export default function Page({ params }: PageProps) {
+export default function Page({ params }: {params: {id: string}})  {
   const post = blogPosts.find((post) => post.id.toString() === params.id);
 
   if (!post) {
@@ -40,7 +35,7 @@ export default function Page({ params }: PageProps) {
 }
 
 
-export function generateStaticParams() {
+export function generateStaticParams(): { id: string }[] {
   return blogPosts.map((post) => ({
     id: post.id.toString(),
   }))
