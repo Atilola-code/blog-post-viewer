@@ -9,12 +9,13 @@ type Props = {
   };
 };
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return blogPosts.map((post) => ({
     id: post.id.toString(),
   }));
 }
 
+// ✅ NOTICE: no async keyword here
 export default function Page({ params }: Props) {
   const post = blogPosts.find((post) => post.id.toString() === params.id);
 
@@ -42,5 +43,6 @@ export default function Page({ params }: Props) {
     </div>
   );
 }
+
 
 
