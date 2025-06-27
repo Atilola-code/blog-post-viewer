@@ -1,29 +1,26 @@
 "use client";
-
 import { useState } from "react";
 
-const NewsletterSignup: React.FC = () => {
+export default function NewsletterSignup() {
   const [email, setEmail] = useState("");
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-    alert(`Subscribed with: ${email}`);
+    console.log("Subscribed:", email);
     setEmail("");
   };
 
   return (
-    <div className="w-full px-6">
-        <div className="bg-amber-50 py-16 px-8 text-center rounded-lg shadow mt-16 max-w-screen-xl mx-auto">
-      <h2 className="text-3xl font-bold mb-4 text-gray-800">Join our Newsletter</h2>
-      <p className="text-gray-600 mb-6 text-lg">Get the latest wellness tips, workouts, and recipes delivered to your inbox!</p>
-      <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row justify-center gap-4 max-w-lg mx-auto">
+    <div className="w-full md:w-1/2 mx-auto bg-orange-50 rounded-xl p-8 shadow mt-16">
+      <h2 className="text-2xl font-bold text-center mb-4 text-orange-600">Subscribe to our Newsletter</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
-          className="p-3 rounded-lg border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+          required
         />
         <button
           type="submit"
@@ -32,9 +29,6 @@ const NewsletterSignup: React.FC = () => {
           Subscribe
         </button>
       </form>
-        </div>
     </div>
   );
-};
-
-export default NewsletterSignup
+}
