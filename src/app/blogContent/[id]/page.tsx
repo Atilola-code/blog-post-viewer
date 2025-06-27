@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 
-export default function Page({ params }: {params: {id: string}})  {
+export default async function Page({ params }: {params: {id: string}})  {
   const post = blogPosts.find((post) => post.id.toString() === params.id);
 
   if (!post) {
