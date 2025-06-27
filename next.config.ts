@@ -1,16 +1,19 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  output: 'standalone',
   typescript: {
-    ignoreBuildErrors: false, // Set to true only if you must bypass type errors
+    ignoreBuildErrors: false,
   },
   eslint: {
     ignoreDuringBuilds: false,
   },
   images: {
-    domains: [], // Add your image domains here if needed
+    domains: [],
   },
-  // Remove swcMinify as it's now handled automatically by Next.js
+  reactStrictMode: true,
+  // Removed swcMinify as it's now automatic in Next.js 15+
+  // Removed modularizeImports and transpilePackages as they're not needed in basic config
 }
 
-module.exports = nextConfig
+export default nextConfig

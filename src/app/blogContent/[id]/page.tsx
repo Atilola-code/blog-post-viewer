@@ -1,37 +1,41 @@
-import { blogPosts } from '@/app/data'
-import { notFound } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
+import { blogPosts } from "@/app/data";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import type { Metadata } from "next";
 
-// Use Next.js's built-in types
-import type { Metadata, ResolvingMetadata } from 'next'
-
-// Define your post type (if not already defined elsewhere)
-type BlogPost = {
-  id: number | string
-  title: string
-  content: string
-  category: string
-  image: string
-  snippet: string
-}
-
+// Pre-generate all static routes based on blog post IDs
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     id: post.id.toString(),
-  }))
+  }));
 }
 
-// Use the correct props type for Next.js App Router
-type Props = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+// Optional: Generate dynamic metadata for better SEO and titles
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const post = blogPosts.find((post) => post.id.toString() === params.id);
+
+  if (!post) {
+    return {
+      title: "Post Not Found | Blog Viewer",
+    };
+  }
+
+  return {
+    title: `${post.title} | Blog Viewer`,
+    description: post.snippet,
+  };
 }
 
-export default function Page({ params }: Props) {
-  const post = blogPosts.find((post) => post.id.toString() === params.id)
+// Main page component for individual blog posts
+export default function Page({ params }: { params: { id: string } }) {
+  const post = blogPosts.find((post) => post.id.toString() === params.id);
 
-  if (!post) notFound()
+  if (!post) notFound();
 
   return (
     <div className="max-w-3xl mx-auto p-6 min-h-screen">
@@ -53,24 +57,7 @@ export default function Page({ params }: Props) {
         Back to Blog
       </Link>
     </div>
-  )
+  );
 }
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const post = blogPosts.find((post) => post.id.toString() === params.id)
 
-  if (!post) return {}
-
-  return {
-    title: post.title,
-    description: post.snippet,
-    openGraph: {
-      title: post.title,
-      description: post.snippet,
-      images: [post.image],
-    },
-  }
-}
